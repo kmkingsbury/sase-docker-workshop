@@ -11,6 +11,8 @@ except ImportError:
   import gobject as GObject
 import bluezutils
 
+import json
+
 compact = False
 devices = {}
 
@@ -37,6 +39,7 @@ def print_compact(address, properties):
 
 def print_normal(address, properties):
 	print("[ " + address + " ]")
+	print("Hello!")
 
 	for key in properties.keys():
 		value = properties[key]
