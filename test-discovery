@@ -13,8 +13,8 @@ import bluezutils
 
 import json
 import time
+import requests
 
-import urllib2
 compact = False
 devices = {}
 
@@ -68,10 +68,9 @@ def print_normal(address, properties):
 	#print(data)
 	
         #$print json.dumps(myjpayload)
-        req = urllib2.Request('localhost')
-        req.add_header('Content-Type', 'application/json')
+        r = requests.post("http://localhost", params=data)
+        print(r.url)
 
-        response = urllib2.urlopen(req, json.dumps(data)) 
 	properties["Logged"] = True
 
 def skip_dev(old_dev, new_dev):
