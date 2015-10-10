@@ -23,7 +23,7 @@ TODO: List your supported platforms.
   </tr>
   <tr>
     <td><tt>simplewebserver.py</tt></td>
-    <td><Webserver to handle the API POSTs and GETs/td>
+    <td>Webserver to handle the API POSTs and GETs</td>
     <td><tt>Docker</tt></td>
   </tr>
 </table>
