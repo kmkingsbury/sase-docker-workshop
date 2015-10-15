@@ -14,16 +14,17 @@ import bluezutils
 import json
 import time
 import requests
-import os
+import os,sys
 
 compact = False
 devices = {}
 
-url = "192.168.61.123:8081/api/v1/addrecord"
+url = str(sys.argv[1])+":8081/api/v1/addrecord"
 
 # Get my Bluetooth Addr for Tagging:
 prefix = os.popen('cat /sys/class/bluetooth/hci0/address').read()
-print("Prefix:"+str(prefix))
+prefix = str(prefix).replace(":", "")    
+print("Prefix: "+prefix)
 
 def print_compact(address, properties):
         name = ""
@@ -61,21 +62,23 @@ def print_normal(address, properties):
 			if key ==  "Alias":
 			  data['alias'] = str(value)		
 			elif key == "RSSI":
-			  data['signal'] = str(value)
+			  data['signal-'+prefix] = str(value)
 
 
 	print()
         # Make JSON object
         data['uid'] = str(address)
-        data['dtg'] = int(time.time())
+        data['dtg-'+prefix] = int(time.time())
         #print("Data: ")
 	#print(data)
-	data['src'] = "edison"+str(prefix).replace(":", "")
+	#data['src'+prefix] = str(prefix)
        #$print json.dumps(myjpayload)
         myU = "http://"+url+"/"+str(address).replace(":", "")
-        r = requests.post(myU, params=data)
+        print(myU)                             
+
+        r = requests.post(myU, json=data)
 #        print(r.url)
-	print(myU) 
+# 	print(data) 
 	properties["Logged"] = True
 
 def skip_dev(old_dev, new_dev):
