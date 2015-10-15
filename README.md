@@ -28,7 +28,22 @@ TODO: List your supported platforms.
   </tr>
 </table>
 
-
+# Test Discovery:
+```
+{"Paired": "0", 
+"Adapter": "/org/bluez/hci0", 
+"DTG": 1444944104, 
+"LegacyPairing": "0", 
+"Listener": "xxxxxxxx", 
+"Alias": "XX-XX-XX-XX-XX-XX", 
+"Connected": "0", 
+"Location": "16th Floor", 
+"Address": "00:XX:XX:XX:XX:XX", 
+"RSSI": "-90", 
+"Blocked": "0", 
+"Trusted": "0", 
+"UUIDs": "dbus.Array([], signature=dbus.Signature('s'), variant_level=1)"}
+```
 
 # Setup Edison
 ```

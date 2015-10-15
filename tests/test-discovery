@@ -19,11 +19,14 @@ import os,sys
 compact = False
 devices = {}
 
+
 url = str(sys.argv[1])+":8081/api/v1/addrecord"
+location = str(sys.argv[2])
 
 # Get my Bluetooth Addr for Tagging:
 prefix = os.popen('cat /sys/class/bluetooth/hci0/address').read()
 prefix = str(prefix).replace(":", "")    
+prefix = prefix.strip()
 print("Prefix: "+prefix)
 
 def print_compact(address, properties):
@@ -50,7 +53,9 @@ def print_normal(address, properties):
 	print("[ " + address + " ]")
 
 
-        data = {}   
+        clientdata = {}   
+	clientdata['Listener'] = prefix
+	clientdata['Location'] = location
 	for key in properties.keys():
 		value = properties[key]
 		if type(value) is dbus.String:
@@ -59,24 +64,24 @@ def print_normal(address, properties):
 			print("    %s c= 0x%06x" % (key, value))
 		else:
 			print("    %s = %s" % (key, value))
-			if key ==  "Alias":
-			  data['alias'] = str(value)		
-			elif key == "RSSI":
-			  data['signal-'+prefix] = str(value)
+			clientdata[key] = str(value)
+			#if key ==  "Alias":
+			#  data['alias'] = str(value)		
+			#elif key == "RSSI":
+			#  data['signal-'+prefix] = str(value)
 
 
 	print()
         # Make JSON object
-        data['uid'] = str(address)
-        data['dtg-'+prefix] = int(time.time())
+        clientdata['DTG'] = int(time.time())
         #print("Data: ")
-	#print(data)
-	#data['src'+prefix] = str(prefix)
+	print(json.dumps(clientdata))
+	#data[on.dumps(src'+prefix] = str(prefix)
        #$print json.dumps(myjpayload)
         myU = "http://"+url+"/"+str(address).replace(":", "")
         print(myU)                             
-
-        r = requests.post(myU, json=data)
+	print("Client address:"+clientdata['Address'])
+        r = requests.post(myU, json=clientdata)
 #        print(r.url)
 # 	print(data) 
 	properties["Logged"] = True
