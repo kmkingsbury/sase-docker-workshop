@@ -14,11 +14,16 @@ import bluezutils
 import json
 import time
 import requests
+import os
 
 compact = False
 devices = {}
 
 url = "192.168.61.123:8081/api/v1/addrecord"
+
+# Get my Bluetooth Addr for Tagging:
+prefix = os.popen('cat /sys/class/bluetooth/hci0/address').read()
+print("Prefix:"+str(prefix))
 
 def print_compact(address, properties):
         name = ""
@@ -65,7 +70,7 @@ def print_normal(address, properties):
         data['dtg'] = int(time.time())
         #print("Data: ")
 	#print(data)
-	
+	data['src'] = "edison"+str(prefix).replace(":", "")
        #$print json.dumps(myjpayload)
         myU = "http://"+url+"/"+str(address).replace(":", "")
         r = requests.post(myU, params=data)
